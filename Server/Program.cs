@@ -6,12 +6,8 @@ namespace Server
     {
         static void Main(string[] args)
         {
-            foreach (var trip in GlobalConfig.CloudAppConfig.Trips)
-            {
-                var rawResult = new DirectionsClient(new RequestExecutor(GlobalConfig.MapsBaseUrl)).GetDirections(trip.Origin, trip.Destination).Result;
-                var data = TripDataTransformer.Transform(trip.Name, rawResult);
-                new DynamoDbWriter(GlobalConfig.DbTableName).WriteData(data).Wait();
-            }
+            PollingLambda test = null;
+            new Poller().Poll();
             Console.WriteLine("donezo");
         }
     }

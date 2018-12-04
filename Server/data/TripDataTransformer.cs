@@ -10,7 +10,7 @@ public class TripDataTransformer
         var nowEst = Date.ConvertDateToEst(nowUtc);
         var data = new TripData();
         data.CalendarDate = Date.GetCalendarDate(nowEst);
-        data.NameHourMin = $"{name}{nowEst.Hour}{nowEst.Minute}";
+        data.NameHourMin = $"{name}{nowEst.Hour.ToString("D2")}{nowEst.Minute.ToString("D2")}";
         data.DataSource = "Google";
         data.DayOfMonth = nowEst.Day;
         data.DayOfWeek = nowEst.DayOfWeek.ToString().Substring(0,3);

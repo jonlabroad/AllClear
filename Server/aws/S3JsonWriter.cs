@@ -5,6 +5,16 @@ using Newtonsoft.Json;
 
 public class S3JsonWriter : SimpleS3Provider {
 
+    public S3JsonWriter() : base()
+    {
+
+    }
+
+    public S3JsonWriter(string bucketName) : base(bucketName)
+    {
+        
+    }
+
     public async Task write<T>(string key, T obj) {
         await write(key, obj, false);
     }
