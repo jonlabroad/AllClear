@@ -6,7 +6,7 @@ namespace Server
     {
         static void Main(string[] args)
         {
-            PollingLambda test = null;
+            // new DayAverager().CalculateAveragesAllDays().Wait();
             new Poller().Poll();
             Console.WriteLine("donezo");
         }

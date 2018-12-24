@@ -8,4 +8,5 @@ public class GlobalConfig
     public static string MapsBaseUrl = "https://maps.googleapis.com";
     public static RegionEndpoint AwsRegion = RegionEndpoint.USEast1;
     public static CloudAppConfig CloudAppConfig = new CloudAppConfigProvider().read().Result;
+    public static int HistorySize = 150;
 }
