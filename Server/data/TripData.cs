@@ -16,4 +16,5 @@ public class TripData
     public int TrafficTime { get; set; }
     public double UTCSec { get; set; }
     public int Year { get; set; }
+    public string ResponseObject { get; set; }
 }

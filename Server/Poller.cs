@@ -15,7 +15,8 @@ public class Poller
         {
             if (IsTimeToPoll(trip))
             {
-                var rawResult = new DirectionsClient(new RequestExecutor(GlobalConfig.MapsBaseUrl)).GetDirections(trip.Origin, trip.Destination, trip.Waypoints).Result;
+                // var rawResult = new DirectionsClient(new RequestExecutor(GlobalConfig.GoogleMapsBaseUrl)).GetDirections(trip.Origin, trip.Destination, trip.Waypoints).Result;
+                var rawResult = new client.mapbox.DirectionsClient(new RequestExecutor(GlobalConfig.MapBoxBaseUrl)).GetDirections(trip.Origin, trip.Destination, trip.Waypoints).Result;
                 Console.WriteLine(JsonConvert.SerializeObject(rawResult));
                 var data = TripDataTransformer.Transform(trip.Name, rawResult);
                 new DynamoDbWriter(GlobalConfig.DbTableName).WriteData(data).Wait();

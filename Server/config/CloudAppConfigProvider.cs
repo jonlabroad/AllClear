@@ -21,6 +21,6 @@ public class CloudAppConfigProvider
 
     public async Task write(CloudAppConfig config) {
         _config = config;
-        await _writer.write(FILENAME, config, true);
+        await _writer.write(FILENAME, config, false);
     }
 }

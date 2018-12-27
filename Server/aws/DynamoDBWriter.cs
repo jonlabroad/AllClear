@@ -33,7 +33,8 @@ public class DynamoDbWriter
             {"TotalHours", new AttributeValue() { N = data.TotalHours.ToString() }},
             {"TrafficTime", new AttributeValue() { N = data.TrafficTime.ToString() }},
             {"UTCSec", new AttributeValue() { N = data.UTCSec.ToString() }},
-            {"Year", new AttributeValue() { N = data.Year.ToString() }}
+            {"Year", new AttributeValue() { N = data.Year.ToString() }},
+            {"ResponseObject", new AttributeValue() { S = data.ResponseObject }}
         };
         await WriteData(values);
     }

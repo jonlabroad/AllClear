@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Amazon.DynamoDBv2.Model;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 public class TripDataTransformer
 {
@@ -27,6 +29,34 @@ public class TripDataTransformer
         data.TrafficTime = trafficDuration;
         data.UTCSec = new DateTimeOffset(nowUtc).ToUnixTimeSeconds();
         data.Year = nowEst.Year;
+        data.ResponseObject = JsonConvert.SerializeObject(directions);
+        return data;
+    }
+
+    public static TripData Transform(string name, client.mapbox.DirectionsResponse directions)
+    {
+        var duration = GlobalConfig.DefaultMapBoxDurations[name];
+        var trafficDuration = directions.routes[0].duration;
+        var nowUtc = DateTime.UtcNow;
+        var nowEst = Date.ConvertDateToEst(nowUtc);
+        var data = new TripData();
+        data.CalendarDate = Date.GetCalendarDate(nowEst);
+        data.NameHourMin = $"{name}{nowEst.Hour.ToString("D2")}{nowEst.Minute.ToString("D2")}";
+        data.DataSource = "MapBox";
+        data.DayOfMonth = nowEst.Day;
+        data.DayOfWeek = nowEst.DayOfWeek.ToString().Substring(0, 3);
+        data.Factor = (double)trafficDuration / duration;
+        data.Hour = nowEst.Hour;
+        data.IdealTime = (int) Math.Round(duration);
+        data.Min = nowEst.Minute;
+        data.Month = nowEst.Month;
+        data.Name = name;
+        data.Sec = nowEst.Second;
+        data.TotalHours = nowEst.Hour + nowEst.Minute / 60.0 + nowEst.Second / 3600.0;
+        data.TrafficTime = (int) Math.Round(trafficDuration);
+        data.UTCSec = new DateTimeOffset(nowUtc).ToUnixTimeSeconds();
+        data.Year = nowEst.Year;
+        data.ResponseObject = JsonConvert.SerializeObject(directions);
         return data;
     }
 
