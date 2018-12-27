@@ -10,7 +10,7 @@ namespace client.mapbox
         public IRestRequest GenerateDirectionsRequest(string source, string destination, List<string> waypoints)
         {
             var waypointParam = GetWaypoints(source, destination, new List<string>() /* waypoints */);
-            var resource = $"directions/v5/mapbox/driving-traffic/{waypointParam}?access_token={GlobalConfig.CloudAppConfig.MapBoxApiKey}";
+            var resource = $"directions/v5/mapbox/driving-traffic/{waypointParam}?alternatives=true&access_token={GlobalConfig.CloudAppConfig.MapBoxApiKey}";
             return new RestRequest(resource, Method.GET);
         }
 
