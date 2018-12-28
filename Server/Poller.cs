@@ -1,36 +1,56 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 public class Poller
 {
     public void Poll()
     {
-        var results = new AllTripStatus()
+        var clients = new List<ITripDataClient>
         {
-            results = new List<TripStatus>()
+            new MapboxTripClient(),
+            new MapquestTripClient()
         };
 
-        foreach (var trip in GlobalConfig.CloudAppConfig.Trips)
+        var tasks = new List<Task>();
+        foreach (var client in clients)
         {
-            if (IsTimeToPoll(trip))
+            foreach (var trip in GlobalConfig.CloudAppConfig.Trips)
             {
-                // var rawResult = new DirectionsClient(new RequestExecutor(GlobalConfig.GoogleMapsBaseUrl)).GetDirections(trip.Origin, trip.Destination, trip.Waypoints).Result;
-                var rawResult = new client.mapbox.DirectionsClient(new RequestExecutor(GlobalConfig.MapBoxBaseUrl)).GetDirections(trip.Origin, trip.Destination, trip.Waypoints).Result;
-                Console.WriteLine(JsonConvert.SerializeObject(rawResult));
-                var data = TripDataTransformer.Transform(trip.Name, rawResult);
-                new DynamoDbWriter(GlobalConfig.DbTableName).WriteData(data).Wait();
+                var task = Poll(trip, client);
+                tasks.Add(task);
+            }
+        }
+        Task.WhenAll(tasks);
+    }
+
+    private async Task Poll(TripConfig tripConfig, ITripDataClient client)
+    {
+        if (IsTimeToPoll(tripConfig))
+        {
+            var data = await client.GetTripData(tripConfig);
+            await new DynamoDbWriter(GlobalConfig.DbTableName).WriteData(data);
+            if (client.IsMaster)
+            {
+                var results = new AllTripStatus()
+                {
+                    results = new List<TripStatus>()
+                };
+
                 results.results.Add(new TripStatus()
                 {
-                    name = trip.Name,
+                    name = tripConfig.Name,
                     date = data.CalendarDate,
                     idealTimeSec = data.IdealTime,
                     travelTimeSec = data.TrafficTime,
-                    factor = (double) data.TrafficTime / data.IdealTime
+                    factor = (double)data.TrafficTime / data.IdealTime
                 });
-                new S3JsonWriter("allclearcache").write("response.json", results).Wait();
+                await new S3JsonWriter("allclearcache").write("response.json", results);
             }
+
         }
+
     }
 
     private bool IsTimeToPoll(TripConfig trip)
