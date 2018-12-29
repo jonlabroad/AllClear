@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 public class Poller
 {
-    public void Poll()
+    public async Task Poll()
     {
         var clients = new List<ITripDataClient>
         {
@@ -22,7 +22,7 @@ public class Poller
                 tasks.Add(task);
             }
         }
-        Task.WhenAll(tasks);
+        await Task.WhenAll(tasks);
     }
 
     private async Task Poll(TripConfig tripConfig, ITripDataClient client)

@@ -9,7 +9,7 @@ namespace Server
         {
             // new CloudAppConfigProvider().write(GlobalConfig.CloudAppConfig).Wait();
 
-            new Poller().Poll();
+            new Poller().Poll().Wait();
             Console.WriteLine("donezo");
         }
     }
