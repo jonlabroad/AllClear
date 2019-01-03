@@ -30,14 +30,14 @@ export default class TrafficElement
         this.DataSource = dataItem["DataSource"].S;
         this.DayOfMonth = parseInt(dataItem["DayOfMonth"].N);
         this.DayOfWeek = dataItem["DayOfWeek"].S;
-        this.Factor = parseInt(dataItem["Factor"].N);
+        this.Factor = parseFloat(dataItem["Factor"].N);
         this.Hour = hour;
         this.IdealTime = parseInt(dataItem["IdealTime"].N);
         this.Min = min;
         this.Month = parseInt(dataItem["Month"].N);
         this.Name = dataItem["Name"].S;
         this.Sec = parseInt(dataItem["Sec"].N);
-        this.TotalHours = parseInt(dataItem["TotalHours"].N);
+        this.TotalHours = parseFloat(dataItem["TotalHours"].N);
         this.TrafficTime = parseInt(dataItem["TrafficTime"].N);
         this.UTCSec = parseInt(dataItem["UTCSec"].N);
         this.Year = parseInt(dataItem["Year"].N);

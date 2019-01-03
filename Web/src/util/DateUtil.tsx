@@ -57,14 +57,14 @@ export default class DateUtil {
     public static getMoment(calendarDate: string, hourMin: string) : Date {
         var date = this.getMomentNoTime(calendarDate);
         var hourMinNum = parseInt(hourMin);
-        date.setHours(Math.floor(hourMinNum/60));
-        date.setMinutes(hourMinNum - date.getHours());
+        date.setHours(Math.floor(hourMinNum/100));
+        date.setMinutes(hourMinNum - date.getHours()*100);
         return date;
     }
 
     public static getMomentNoTime(calendarDate: string) : Date {
         var date = new Date();
-        date.setFullYear(parseInt(calendarDate.substr(0, 4)), parseInt(calendarDate.substr(4, 2)), parseInt(calendarDate.substr(6, 2)));
+        date.setFullYear(parseInt(calendarDate.substr(0, 4)), parseInt(calendarDate.substr(4, 2)) - 1, parseInt(calendarDate.substr(6, 2)));
         return date;
     }    
 
