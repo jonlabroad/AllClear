@@ -1,6 +1,7 @@
 import TrafficData from "../data/TrafficData";
+import TrafficAvgData from "../data/TrafficAvgData";
 
 export interface DashboardState {
-    test: string;
     rawData?: TrafficData;
+    avgData?: TrafficAvgData;
 }

@@ -1,18 +1,18 @@
 import { DashboardState } from '../types/index';
-import { CHANGE_TEST_TEXT, UPDATE_RAW_TRAFFIC_DATA } from '../constants/index';
+import { UPDATE_RAW_TRAFFIC_DATA, UPDATE_AVG_TRAFFIC_DATA } from '../constants/index';
 import { Reducer } from 'redux';
 
 const initialState: DashboardState = {
-    test: "DEFAULT VALUE",
-    rawData: undefined
+    rawData: undefined,
+    avgData: undefined
 };
 
-export const changeText: Reducer<DashboardState> = (state = initialState, action): DashboardState => {
+export const updateData: Reducer<DashboardState> = (state = initialState, action): DashboardState => {
   switch (action.type) {
-    case CHANGE_TEST_TEXT:
-      return { ...state, test: action.text };
     case UPDATE_RAW_TRAFFIC_DATA:
       return { ...state, rawData: action.rawData };
+    case UPDATE_AVG_TRAFFIC_DATA:
+      return { ...state, avgData: action.avgData };
   }
   return state;
 }

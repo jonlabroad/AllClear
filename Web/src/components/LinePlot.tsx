@@ -1,11 +1,14 @@
 import * as React from "react";
-import Highcharts from "highcharts";
+import Highcharts, { SeriesOptionsType } from "highcharts";
+import Enumerable from "linq";
 const ReactHighcharts = require('react-highcharts');
 
 export interface LinePlotProps {
     title: string,
     x: Date[];
     y: number[];
+    x2: Date[];
+    y2: number[];
     xAxisLabel: string;
     yAxisLabel: string;
     yAxisMin: number;
@@ -17,8 +20,21 @@ export default class LinePlot extends React.Component<LinePlotProps, object> {
         super(props);
     }
 
-    createDatapoint(x: number, y: number): [number, number] {
-        return [x, y];
+    createSeries(name: string, type: any, x: number[], y: number[], showMarker: boolean): SeriesOptionsType
+    {
+        var newSeries: Highcharts.SeriesLineOptions = {
+            name: name,
+            type: type,
+            data: new Array<Highcharts.SeriesLineOptions>(),
+            marker: {
+                enabled: showMarker
+            }
+        };
+        for (var i=0; i < x.length; i++)
+        {
+            newSeries.data.push([x[i], y[i]]);
+        }
+        return newSeries;
     }
 
     createConfig(): Highcharts.Options {
@@ -47,16 +63,21 @@ export default class LinePlot extends React.Component<LinePlotProps, object> {
             }
         }
         config.series = new Array<Highcharts.SeriesOptionsType>();
-        var newSeries: Highcharts.SeriesLineOptions = {
-            name: "Factor",
-            type: 'line',
-            data: new Array<Highcharts.SeriesLineOptions>()
-        };
-        for (var i=0; i<this.props.x.length; i++)
-        {
-            newSeries.data.push([this.props.x[i].getTime(), this.props.y[i]]);
-        }
-        config.series.push(newSeries);
+        config.series.push(this.createSeries(
+            "Factor",
+            'line',
+            Enumerable.from(this.props.x).select(x => x.getTime()).toArray(),
+            this.props.y,
+            true
+        ));
+        config.series.push(this.createSeries(
+            "Average",
+            'line',
+            Enumerable.from(this.props.x2).select(x => x.getTime()).toArray(),
+            this.props.y2,
+            false
+        ));
+
         return config;
     }
 

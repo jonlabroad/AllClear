@@ -26,6 +26,11 @@ export default class DateUtil {
         return parseInt(calendarDate.substr(6, 2));
     }
 
+    public static getDayOfWeekString(calendarDate: string) : string {
+        var dayStrings = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        return dayStrings[this.getMomentNoTime(calendarDate).getDay()];
+    }
+
     public static getHour(hourMin : string) : number {
         if (hourMin.length == 3) {
             return parseInt(hourMin[0]);

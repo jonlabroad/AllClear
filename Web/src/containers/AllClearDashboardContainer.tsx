@@ -3,14 +3,18 @@ import AllClearDashboard from "../components/AllClearDashboard";
 import { DashboardState } from "../types";
 import { connect } from "react-redux";
 import TrafficData from "../data/TrafficData";
+import TrafficAvgData from "../data/TrafficAvgData";
 import { Dispatch } from "redux";
-import { UPDATE_RAW_TRAFFIC_DATA } from "../constants";
 import TrafficDBReader from "../client/TrafficDBReader";
-import { updateRawTrafficData, UpdateRawTrafficDataAction } from "../actions";
+import { RootAction, updateRawTrafficData, UpdateRawTrafficDataAction, updateAvgRawTrafficData } from "../actions";
+import Url from "../util/Url";
+import DateUtil from "../util/DateUtil";
 
 export interface AllClearDashboardContainerProps {
     rawData: TrafficData,
-    updateTrafficData: any
+    avgData: TrafficAvgData,
+    updateTrafficData: any,
+    updateAvgData: any
 }
 
 export class AllClearDashboardContainer extends React.Component<AllClearDashboardContainerProps, object>
@@ -18,16 +22,24 @@ export class AllClearDashboardContainer extends React.Component<AllClearDashboar
     componentDidMount()
     {
         var client = new TrafficDBReader();
-        client.readToday().then((data: TrafficData) => {
+        var dateParam = Url.getParameterByName('date') || DateUtil.getTodayCalendarDate();
+        client.readDate(dateParam).then((data: TrafficData) => {
             this.props.updateTrafficData(data);
+        });
+
+        client.readAvg(dateParam).then((data: TrafficAvgData) => {
+            this.props.updateAvgData(data);
         });
     }
 
     render()
     {
+        var dateParam = Url.getParameterByName('date') || DateUtil.getTodayCalendarDate();
         return (
             <AllClearDashboard
+                calendarDate={dateParam}
                 rawData={this.props.rawData}
+                avgData={this.props.avgData}
             />
         );
     }
@@ -35,13 +47,14 @@ export class AllClearDashboardContainer extends React.Component<AllClearDashboar
 
 export function mapStateToProps(state: DashboardState) {
     return {
-      testText: state.test,
-      rawData: state.rawData
+      rawData: state.rawData,
+      avgData: state.avgData
     }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<UpdateRawTrafficDataAction>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
      updateTrafficData: (data: TrafficData) => dispatch(updateRawTrafficData(data)),
+     updateAvgData: (data: TrafficAvgData) => dispatch(updateAvgRawTrafficData(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllClearDashboardContainer);

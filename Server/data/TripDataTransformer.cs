@@ -41,7 +41,7 @@ public class TripDataTransformer
         var nowEst = Date.ConvertDateToEst(nowUtc);
         var data = new TripData();
         data.CalendarDate = Date.GetCalendarDate(nowEst);
-        data.NameHourMin = $"{name}{nowEst.Hour.ToString("D2")}{nowEst.Minute.ToString("D2")}";
+        data.NameHourMin = $"{name}{nowEst.Hour.ToString("D2")}{(nowEst.Minute + 1).ToString("D2")}";
         data.DataSource = "MapBox";
         data.DayOfMonth = nowEst.Day;
         data.DayOfWeek = nowEst.DayOfWeek.ToString().Substring(0, 3);

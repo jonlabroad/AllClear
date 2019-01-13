@@ -1,0 +1,13 @@
+
+.appbar
+{
+    height: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+.appbar-title
+{
+    padding-left: 50px;
+}
+

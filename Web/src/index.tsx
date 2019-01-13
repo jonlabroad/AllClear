@@ -5,16 +5,15 @@ import * as serviceWorker from './serviceWorker';
 import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import { DashboardState } from './types';
-import TripDataset from './types/TripDataset';
-import { ChangeTextAction } from './actions';
-import { changeText } from './reducers';
+import { updateData } from './reducers';
 import { Provider } from 'react-redux';
+import { AnyARecord } from 'dns';
 
-const store = createStore<DashboardState, ChangeTextAction, any, any>(
-    changeText,
+const store = createStore<DashboardState, AnyARecord, any, any>(
+    updateData,
     {
-        test: "DEFAULT VALUE",
-        rawData: undefined
+        rawData: undefined,
+        avgData: undefined
     }
 );
 
