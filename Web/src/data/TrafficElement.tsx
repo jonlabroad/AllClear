@@ -41,7 +41,7 @@ export default class TrafficElement
         this.TrafficTime = parseInt(dataItem["TrafficTime"].N);
         this.UTCSec = parseInt(dataItem["UTCSec"].N);
         this.Year = parseInt(dataItem["Year"].N);
-        this.ResponseObject = dataItem["ResponseObject"].S;
+        this.ResponseObject = dataItem["ResponseObject"] ? dataItem["ResponseObject"].S : "";
         this.Date = DateUtil.getMoment(calDate, `${DateUtil.numberWith1LeadingZero(hour)}${DateUtil.numberWith1LeadingZero(min)}`);
     }
 }

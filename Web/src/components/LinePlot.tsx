@@ -3,12 +3,16 @@ import Highcharts, { SeriesOptionsType } from "highcharts";
 import Enumerable from "linq";
 const ReactHighcharts = require('react-highcharts');
 
-export interface LinePlotProps {
-    title: string,
+export interface LinePlotSeries {
+    name: string;
     x: Date[];
     y: number[];
-    x2: Date[];
-    y2: number[];
+    marker: string;
+}
+
+export interface LinePlotProps {
+    series: LinePlotSeries[];
+    title: string,
     xAxisLabel: string;
     yAxisLabel: string;
     yAxisMin: number;
@@ -20,14 +24,16 @@ export default class LinePlot extends React.Component<LinePlotProps, object> {
         super(props);
     }
 
-    createSeries(name: string, type: any, x: number[], y: number[], showMarker: boolean): SeriesOptionsType
+    createSeries(name: string, type: any, x: number[], y: number[], showMarker: boolean, marker?: string): SeriesOptionsType
     {
         var newSeries: Highcharts.SeriesLineOptions = {
             name: name,
             type: type,
             data: new Array<Highcharts.SeriesLineOptions>(),
             marker: {
-                enabled: showMarker
+                enabled: showMarker,
+                radius: 5,
+                symbol: marker || "circle"
             }
         };
         for (var i=0; i < x.length; i++)
@@ -63,20 +69,16 @@ export default class LinePlot extends React.Component<LinePlotProps, object> {
             }
         }
         config.series = new Array<Highcharts.SeriesOptionsType>();
-        config.series.push(this.createSeries(
-            "Factor",
-            'line',
-            Enumerable.from(this.props.x).select(x => x.getTime()).toArray(),
-            this.props.y,
-            true
-        ));
-        config.series.push(this.createSeries(
-            "Average",
-            'line',
-            Enumerable.from(this.props.x2).select(x => x.getTime()).toArray(),
-            this.props.y2,
-            false
-        ));
+        Enumerable.from(this.props.series).forEach(s => {
+            config.series.push(this.createSeries(
+                s.name,
+                'line',
+                Enumerable.from(s.x).select(x => x.getTime()).toArray(),
+                s.y,
+                s.marker ? true : false,
+                s.marker
+            ));
+        });
 
         return config;
     }
