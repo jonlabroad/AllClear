@@ -1,0 +1,22 @@
+{
+    "production": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-allclear-production-144346-authRole",
+            "UnauthRoleArn": "arn:aws:iam::796987500533:role/amplify-allclear-production-144346-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::796987500533:role/amplify-allclear-production-144346-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-allclear-production-144346-deployment",
+            "UnauthRoleName": "amplify-allclear-production-144346-unauthRole",
+            "StackName": "amplify-allclear-production-144346",
+            "StackId": "arn:aws:cloudformation:us-east-1:796987500533:stack/amplify-allclear-production-144346/b3c6d560-826d-11ea-a5dc-0eb5b83f8639",
+            "AmplifyAppId": "d2b9g6xg1xdixs"
+        },
+        "categories": {
+            "auth": {
+                "allclear1e3a8e92": {
+                    "hostedUIProviderCreds": "[{\"ProviderName\":\"Google\",\"client_id\":\"23284608848-f6u7al8jgdat6bogt5ever0o5g31950g.apps.googleusercontent.com\",\"client_secret\":\"i3UqmSD9jLzEQLapTu_Raxgj\"}]"
+                }
+            }
+        }
+    }
+}

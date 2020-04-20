@@ -9,10 +9,11 @@ import TrafficDBReader from "../client/TrafficDBReader";
 import { RootAction, updateRawTrafficData, UpdateRawTrafficDataAction, updateAvgRawTrafficData } from "../actions";
 import Url from "../util/Url";
 import DateUtil from "../util/DateUtil";
+import Credentials from "../aws/Credentials";
 
 export interface AllClearDashboardContainerProps {
-    rawData: TrafficData,
-    avgData: TrafficAvgData,
+    rawData: TrafficData | undefined,
+    avgData: TrafficAvgData | undefined,
     updateTrafficData: any,
     updateAvgData: any
 }
@@ -21,15 +22,17 @@ export class AllClearDashboardContainer extends React.Component<AllClearDashboar
 {
     componentDidMount()
     {
-        var client = new TrafficDBReader();
-        var dateParam = Url.getParameterByName('date') || DateUtil.getTodayCalendarDate();
-        client.readDate(dateParam).then((data: TrafficData) => {
-            this.props.updateTrafficData(data);
-        });
+        new Credentials().init().then(() => {
+            var client = new TrafficDBReader();
+            var dateParam = Url.getParameterByName('date') || DateUtil.getTodayCalendarDate();
+            client.readDate(dateParam).then((data: TrafficData) => {
+                this.props.updateTrafficData(data);
+            });
 
-        client.readAvg(dateParam).then((data: TrafficAvgData) => {
-            this.props.updateAvgData(data);
-        });
+            client.readAvg(dateParam).then((data: TrafficAvgData) => {
+                this.props.updateAvgData(data);
+            });
+        })
     }
 
     render()

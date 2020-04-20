@@ -20,7 +20,7 @@ export default class TrafficRequestGenerator {
         return request;
     }
 
-    public static generateAvgQuery(calendarDate : string, tripName: string, lastEvaluatedKey: Key) : QueryInput {
+    public static generateAvgQuery(calendarDate : string, tripName: string, lastEvaluatedKey?: Key) : QueryInput {
         var dayOfWeek = DateUtil.getDayOfWeekString(calendarDate);
         var key = `${tripName}${dayOfWeek}`;
         var request : QueryInput = {

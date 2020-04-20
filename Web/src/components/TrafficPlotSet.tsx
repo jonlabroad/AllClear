@@ -6,8 +6,8 @@ import TrafficAvgData from "../data/TrafficAvgData";
 
 export interface TrafficPlotSetProps {
     calendarDate: string;
-    rawData: TrafficData;
-    avgData: TrafficAvgData;
+    rawData: TrafficData | undefined;
+    avgData: TrafficAvgData | undefined;
 }
 
 export default class TrafficPlotSet extends React.Component<TrafficPlotSetProps, object> {
@@ -17,7 +17,7 @@ export default class TrafficPlotSet extends React.Component<TrafficPlotSetProps,
 
     render() {
         return (
-            <Grid container spacing={24} className="main-element">
+            <Grid container spacing={8} className="main-element">
                 <Grid item xs={1}/>
                 <Grid item xs={10}>
                 <LinePlotContainer

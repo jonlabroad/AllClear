@@ -1,6 +1,5 @@
 import * as React from "react";
 import TrafficData from "../data/TrafficData";
-import Credentials from "../aws/Credentials";
 import AppBar from '@material-ui/core/AppBar';
 import '../styles/appbar.css'
 import '../styles/app.css'
@@ -20,15 +19,15 @@ const theme = createMuiTheme({
 
 export interface AllClearDashboardProps {
   calendarDate: string;
-  rawData: TrafficData;
-  avgData: TrafficAvgData;
+  rawData: TrafficData | undefined;
+  avgData: TrafficAvgData | undefined;
 }
 
 export default class AllClearDashboard extends React.Component<AllClearDashboardProps, object> {
   constructor(props: any) {
     super(props);
 
-    new Credentials().init();
+    //new Credentials().init();
   }
 
   render() {

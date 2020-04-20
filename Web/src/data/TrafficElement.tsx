@@ -22,26 +22,26 @@ export default class TrafficElement
     public Date: Date;
 
     constructor(dataItem: AWS.DynamoDB.AttributeMap) {
-        var calDate = dataItem["CalendarDate"].N;
-        var hour = parseInt(dataItem["Hour"].N);
-        var min = parseInt(dataItem["Min"].N);
-        this.CalendarDate = calDate;
-        this.NameHourMin = dataItem["NameHourMin"].S;
-        this.DataSource = dataItem["DataSource"].S;
-        this.DayOfMonth = parseInt(dataItem["DayOfMonth"].N);
-        this.DayOfWeek = dataItem["DayOfWeek"].S;
-        this.Factor = parseFloat(dataItem["Factor"].N);
+        var calDate = dataItem["CalendarDate"].N ?? "";
+        var hour = parseInt(dataItem["Hour"].N ?? "0");
+        var min = parseInt(dataItem["Min"].N ?? "0");
+        this.CalendarDate = calDate ?? "";
+        this.NameHourMin = dataItem["NameHourMin"].S ?? "";
+        this.DataSource = dataItem["DataSource"].S ?? "";
+        this.DayOfMonth = parseInt(dataItem["DayOfMonth"].N ?? "");
+        this.DayOfWeek = dataItem["DayOfWeek"].S ?? "";
+        this.Factor = parseFloat(dataItem["Factor"].N ?? "");
         this.Hour = hour;
-        this.IdealTime = parseInt(dataItem["IdealTime"].N);
+        this.IdealTime = parseInt(dataItem["IdealTime"].N ?? "");
         this.Min = min;
-        this.Month = parseInt(dataItem["Month"].N);
-        this.Name = dataItem["Name"].S;
-        this.Sec = parseInt(dataItem["Sec"].N);
-        this.TotalHours = parseFloat(dataItem["TotalHours"].N);
-        this.TrafficTime = parseInt(dataItem["TrafficTime"].N);
-        this.UTCSec = parseInt(dataItem["UTCSec"].N);
-        this.Year = parseInt(dataItem["Year"].N);
-        this.ResponseObject = dataItem["ResponseObject"] ? dataItem["ResponseObject"].S : "";
+        this.Month = parseInt(dataItem["Month"].N ?? "");
+        this.Name = dataItem["Name"].S ?? "";
+        this.Sec = parseInt(dataItem["Sec"].N ?? "");
+        this.TotalHours = parseFloat(dataItem["TotalHours"].N ?? "");
+        this.TrafficTime = parseInt(dataItem["TrafficTime"].N ?? "");
+        this.UTCSec = parseInt(dataItem["UTCSec"].N ?? "");
+        this.Year = parseInt(dataItem["Year"].N ?? "");
+        this.ResponseObject = dataItem["ResponseObject"] ? dataItem["ResponseObject"].S ?? "" : "";
         this.Date = DateUtil.getMoment(calDate, `${DateUtil.numberWith1LeadingZero(hour)}${DateUtil.numberWith1LeadingZero(min)}`);
     }
 }

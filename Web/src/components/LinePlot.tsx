@@ -29,7 +29,7 @@ export default class LinePlot extends React.Component<LinePlotProps, object> {
         var newSeries: Highcharts.SeriesLineOptions = {
             name: name,
             type: type,
-            data: new Array<Highcharts.SeriesLineOptions>(),
+            data: [],
             marker: {
                 enabled: showMarker,
                 radius: 5,
@@ -38,7 +38,7 @@ export default class LinePlot extends React.Component<LinePlotProps, object> {
         };
         for (var i=0; i < x.length; i++)
         {
-            newSeries.data.push([x[i], y[i]]);
+            newSeries?.data?.push([x[i], y[i]]);
         }
         return newSeries;
     }
@@ -70,7 +70,7 @@ export default class LinePlot extends React.Component<LinePlotProps, object> {
         }
         config.series = new Array<Highcharts.SeriesOptionsType>();
         Enumerable.from(this.props.series).forEach(s => {
-            config.series.push(this.createSeries(
+            config.series?.push(this.createSeries(
                 s.name,
                 'line',
                 Enumerable.from(s.x).select(x => x.getTime()).toArray(),

@@ -1,17 +1,12 @@
 import * as AWS from "aws-sdk";
 import Config from "../config/Config";
+import Amplify, { Auth } from 'aws-amplify';
 
 export default class Credentials
 {
-    public init() {
+    public async init() {
         AWS.config.update({region: `${Config.awsRegion}`});
-        this.SetCognitoCredentials();
-    }
-
-    public SetCognitoCredentials() {
-        var creds = new AWS.CognitoIdentityCredentials({
-            IdentityPoolId: `${Config.identityPoolId}`
-        });
-        AWS.config.credentials = creds;    
+        AWS.config.credentials = await Auth.currentCredentials();
+        //this.SetCognitoCredentials();
     }
 }

@@ -11,8 +11,8 @@ import DateUtil from "../util/DateUtil";
 export interface LinePlotContainerProps {
     calendarDate: string,
     plotName: string,
-    rawData: TrafficData,
-    avgData: TrafficAvgData
+    rawData: TrafficData | undefined,
+    avgData: TrafficAvgData | undefined
 }
 
 export class LinePlotContainer extends React.Component<LinePlotContainerProps, object>
@@ -29,15 +29,15 @@ export class LinePlotContainer extends React.Component<LinePlotContainerProps, o
         var tripName = this.props.plotName;
         if (this.props.rawData)
         {
-            var markers = {
+            var markers: Record<string, string> = {
                 MapQuest: "circle",
                 MapBox: "triangle"
             };
             var tripData = this.props.rawData.data.get(tripName);
             var i = 0;
-            var dataSources = Enumerable.from(tripData).select(t => t.DataSource).distinct();
+            var dataSources = Enumerable.from(tripData ?? []).select(t => t.DataSource).distinct();
             dataSources.forEach(datasource => {
-                var series = Enumerable.from(tripData).where(t => t.DataSource === datasource);
+                var series = Enumerable.from(tripData ?? []).where(t => t.DataSource === datasource);
                 // No idea why I need to divide by 2 here!!!
                 Enumerable.from(series).forEach(e => e.Date.setUTCMinutes(e.Date.getUTCMinutes() - e.Date.getTimezoneOffset()/2));
                 var x = Enumerable.from(series).select(e => e.Date).toArray();
@@ -54,9 +54,9 @@ export class LinePlotContainer extends React.Component<LinePlotContainerProps, o
         if (this.props.avgData)
         {
             var series2 = this.props.avgData.data.get(tripName);
-            var x2 = Enumerable.from(series2.data).select(e => DateUtil.getMoment(this.props.calendarDate, e.HourMin)).toArray();
+            var x2 = Enumerable.from(series2?.data ?? []).select(e => DateUtil.getMoment(this.props.calendarDate, e.HourMin)).toArray();
             Enumerable.from(x2).forEach(e => e.setUTCMinutes(e.getUTCMinutes() - e.getTimezoneOffset()));
-            var y2 = Enumerable.from(series2.data).select(e => e.Factor).toArray();
+            var y2 = Enumerable.from(series2?.data ?? []).select(e => e.Factor).toArray();
             allSeries.push({
                 name: "Average",
                 x: x2,
